@@ -61,7 +61,9 @@ cd backend
 
 `-MaskInput` requires PowerShell 7. On Windows PowerShell 5.1 use `Read-Host -AsSecureString` and `[System.Net.NetworkCredential]::new('', $secureValue).Password` to assign each password to the corresponding environment variable.
 
-Open `http://localhost:8080/` for the full application and `http://localhost:8080/admin/` for the dashboard. For first startup, supply an administrator password of at least 12 characters and no more than 72 UTF-8 bytes. Only a BCrypt hash is stored. Credentials provision the first account only; changing these variables later does not reset it. Remove `ADMIN_PASSWORD` from the production environment after provisioning if your hosting workflow permits it. For a password reset, generate a new BCrypt hash with a trusted tool and update the account through a secured DBA connection; invalidate existing sessions by restarting the application.
+Open `http://localhost:8080/` for the full application and `http://localhost:8080/admin/` for the dashboard. For first startup, supply an administrator password of at least 12 characters and no more than 72 UTF-8 bytes. Only a BCrypt hash is stored. Credentials provision the first account only; changing these variables later does not reset it. Remove `ADMIN_PASSWORD` from the production environment after provisioning if your hosting workflow permits it.
+
+To recover an existing account, set `ADMIN_USERNAME` to its exact stored username, set `ADMIN_PASSWORD` privately to the desired new password, and set `ADMIN_PASSWORD_RESET_ID` to a new identifier such as `recovery-1`. Redeploy/restart. Each identifier is applied only once per account; ordinary redeploys with the same ID do not reset it again. Remove the reset-ID variable after successful recovery. This is a hosting-operator action and has no public reset API. If the username is uncertain, inspect only the `username` column in `admin_users` through your secured database dashboard; do not delete the table or expose password hashes.
 
 To preview the static frontend separately, from the repository root in a second terminal:
 

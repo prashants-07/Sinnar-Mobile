@@ -20,8 +20,9 @@ New backend files:
 - `SecurityConfig.java`, `AuthController.java`, `RateLimitFilter.java`
 - `CatalogController.java`, `EnquiryController.java`, `UploadController.java`, `AdminPageController.java`, `Bootstrap.java`
 - `backend/src/main/resources/application.yml`, `application-local.yml`
-- `backend/src/main/resources/db/migration/V1__schema.sql`, `V2__business_content.sql`
+- `backend/src/main/resources/db/migration/V1__schema.sql`, `V2__business_content.sql`, `V3__admin_password_reset.sql`
 - `backend/src/test/java/com/sinnarmobile/ApiIntegrationTest.java`
+- `backend/src/test/java/com/sinnarmobile/BootstrapTest.java`
 - `backend/src/test/resources/application-test.yml`
 
 New setup/documentation/automation files:

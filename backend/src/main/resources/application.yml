@@ -36,5 +36,6 @@ app:
   upload-dir: ${UPLOAD_DIR:./uploads}
   admin-username: ${ADMIN_USERNAME:}
   admin-password: ${ADMIN_PASSWORD:}
+  admin-password-reset-id: ${ADMIN_PASSWORD_RESET_ID:}
   seed-demo: ${SEED_DEMO:false}
   public-site-url: ${PUBLIC_SITE_URL:https://prashants-07.github.io/Sinnar-Mobile/}

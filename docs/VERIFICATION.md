@@ -1,5 +1,9 @@
 # Verification record — 14 October 2026
 
+## Password recovery follow-up
+
+Added an operator-only one-time password reset through `ADMIN_PASSWORD_RESET_ID`, together with migration V3. All **26 tests passed on H2 and actual MySQL 8.0.41** after this change. The four new tests check explicit opt-in, BCrypt hashing, idempotent reset IDs, rejection of unknown accounts, and invalid password/ID rejection. No production password was inspected, changed or tested by the agent; the hosting owner enters their password privately in Railway and requests the reset. The database stores only a hash and the last applied request ID.
+
 ## Executed successfully
 
 - The existing repository was inspected and its original Git history and JPEG photos were preserved.

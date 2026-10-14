@@ -22,6 +22,7 @@ public class Models {
     public static class AdminUser extends Base {
         @Column(nullable=false,unique=true,length=100) private String username;
         @JsonIgnore @Column(nullable=false) private String passwordHash;
+        @JsonIgnore @Column(length=64) private String passwordResetId;
         @Column(nullable=false,length=20) private String role="ADMIN";
     }
     @Entity @Table(name="categories") @Getter @Setter
