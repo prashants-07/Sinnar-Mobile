@@ -1,0 +1,9 @@
+.git
+.tools
+backend/.tools
+backend/target
+backend/uploads
+.env
+.env.*
+*.log
+node_modules

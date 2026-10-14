@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: ${TEST_DB_URL:jdbc:h2:mem:sinnar;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1}
+    username: ${TEST_DB_USERNAME:sa}
+    password: ${TEST_DB_PASSWORD:}
+    driver-class-name: ${TEST_DB_DRIVER:org.h2.Driver}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+app:
+  admin-username: testadmin
+  admin-password: Test-only-password-123!
+  upload-dir: target/test-uploads
+  seed-demo: false
+  cors-origins: http://localhost:5500,https://prashants-07.github.io
+server:
+  servlet:
+    session:
+      cookie:
+        secure: false
