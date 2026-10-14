@@ -110,5 +110,6 @@ The frontend uses relative page and asset links, so it supports the existing `/S
 - [Deployment guide](docs/DEPLOYMENT.md)
 - [Verification report and remaining checks](docs/VERIFICATION.md)
 - [Modified and newly created files](docs/FILES.md)
+- [Branding, footer, icons, exact map and Instagram configuration](docs/UI-UPDATES.md)
 
 Security configuration follows Spring Security’s [CSRF documentation](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html). All admin mutations, login and logout require a server-issued CSRF token. Only the two unprivileged public enquiry creation routes are exempt; they accept no administrator operations.

@@ -48,7 +48,7 @@ public class SecurityConfig {
             .exceptionHandling(e->e
                 .authenticationEntryPoint((req,res,x)->{res.setStatus(401); res.setContentType("application/json"); json.writeValue(res.getWriter(),Api.error("Please log in.",null));})
                 .accessDeniedHandler((req,res,x)->{res.setStatus(403); res.setContentType("application/json"); json.writeValue(res.getWriter(),Api.error("Access denied or CSRF token expired. Refresh and try again.",null));}))
-            .headers(h->h.contentSecurityPolicy(c->c.policyDirectives("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; font-src 'self'; connect-src 'self'; frame-src https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'")));
+            .headers(h->h.contentSecurityPolicy(c->c.policyDirectives("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; font-src 'self'; connect-src 'self'; frame-src https://maps.google.com https://www.google.com/maps/embed; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'")));
         return http.build();
     }
 }

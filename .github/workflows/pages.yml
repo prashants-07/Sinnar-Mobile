@@ -26,7 +26,12 @@ jobs:
           url = os.environ['API_BASE_URL'].rstrip('/')
           if not re.fullmatch(r'https://[a-zA-Z0-9.-]+(?::[0-9]+)?', url):
               raise SystemExit('Set repository variable API_BASE_URL to the backend HTTPS origin.')
-          Path('frontend/assets/js/config.js').write_text('window.SM_CONFIG = Object.freeze({API_BASE_URL: '+repr(url)+', ADMIN_URL: '+repr(url+'/admin/')+'});\n')
+          config_path = Path('frontend/assets/js/config.js')
+          config = config_path.read_text()
+          config, count = re.subn(r"const productionOrigin = '[^']*';", 'const productionOrigin = '+repr(url)+';', config, count=1)
+          if count != 1:
+              raise SystemExit('Could not locate productionOrigin in the public configuration.')
+          config_path.write_text(config)
           PY
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

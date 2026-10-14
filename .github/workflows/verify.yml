@@ -33,7 +33,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify static site
-        run: python scripts/check_frontend.py
+        run: |
+          python scripts/check_frontend.py
+          python scripts/check_ui_updates.py
+          node scripts/check_ui_icons.mjs
       - name: Test H2 and package Java 21 application
         working-directory: backend
         run: sh mvnw -B -ntp verify

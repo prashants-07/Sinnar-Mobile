@@ -19,7 +19,7 @@ class Page(HTMLParser):
         if tag=='meta':self.meta.add(a.get('name') or a.get('property'))
         if tag=='label' and a.get('for'):self.labels.add(a['for'])
         if tag in ('input','select','textarea') and a.get('id'):self.inputs.append(a['id'])
-        if tag=='img' and not a.get('alt'):errors.append(f'{self.path.name}: image missing alt')
+        if tag=='img' and not a.get('alt') and a.get('aria-hidden')!='true':errors.append(f'{self.path.name}: image missing alt')
         if tag=='iframe' and not a.get('title'):errors.append(f'{self.path.name}: map missing title')
         for key in ('src','href'):
             if a.get(key):self.links.append(a[key])

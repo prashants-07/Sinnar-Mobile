@@ -1,4 +1,5 @@
 import {request,esc,whatsapp,imageUrl,publicSettings,base} from './api.js';
+import {categoryIcon} from './icons.js';
 
 const settings={...publicSettings};
 const menu=document.querySelector('.menu-toggle');
@@ -21,11 +22,23 @@ function applySettings() {
   document.querySelectorAll('[data-email]').forEach(el=>el.href='mailto:'+settings.email);
   document.querySelectorAll('[data-wa]').forEach(el=>el.href=whatsapp('Hello Sinnar Mobile, I would like to enquire about your products and services.',settings.whatsapp));
   document.querySelectorAll('[data-admin]').forEach(el=>{const url=window.SM_CONFIG?.ADMIN_URL||(base?base+'/admin/':'admin/');el.href=url;});
-  document.querySelectorAll('iframe.map').forEach(el=>{el.src='https://maps.google.com/maps?q='+encodeURIComponent(settings.address)+'&z=16&output=embed';});
+  document.querySelectorAll('iframe.map').forEach(el=>{
+    const exact=window.SM_CONFIG?.MAP_EMBED_URL;
+    if(exact&&el.src!==exact)el.src=exact;
+  });
+  document.querySelectorAll('[data-directions]').forEach(el=>{if(window.SM_CONFIG?.MAPS_DIRECTIONS_URL)el.href=window.SM_CONFIG.MAPS_DIRECTIONS_URL;});
   const schema=document.querySelector('script[type="application/ld+json"]');
   if(schema){const data=JSON.parse(schema.textContent);data.name=settings.businessName;data.telephone='+91'+settings.phone;data.email=settings.email;data.address.streetAddress=settings.address;schema.textContent=JSON.stringify(data);}
 }
 applySettings();
+// Never create a misleading social link while a real profile has not been configured.
+try {
+  const instagram=new URL(window.SM_CONFIG?.INSTAGRAM_URL||'');
+  if(instagram.protocol==='https:'&&['instagram.com','www.instagram.com'].includes(instagram.hostname)&&instagram.pathname!=='/'){
+    document.querySelectorAll('[data-instagram]').forEach(el=>{el.href=instagram.href;el.hidden=false;});
+    document.querySelectorAll('[data-instagram-pending]').forEach(el=>{el.hidden=true;});
+  }
+} catch { /* Blank or invalid Instagram configuration leaves the non-clickable icon visible. */ }
 const settingsReady=request('/api/public/settings').then(data=>{Object.assign(settings,data);applySettings();}).catch(()=>{});
 const categoriesReady=request('/api/public/categories').catch(()=>null);
 
@@ -60,8 +73,7 @@ async function loadFeatured() {
 async function loadCategories() {
   const target=document.querySelector('[data-categories]');if(!target)return;
   const data=await categoriesReady;if(!data)return;
-  const icons={'Smartphones':'▯','Mobile Covers':'▣','D+ Glass':'◇','Smart Watches':'◷','Chargers':'ϟ','Bluetooth Earbuds':'◉'};
-  target.innerHTML=data.map(c=>`<a class="category-card" href="products.html?category=${encodeURIComponent(c.name)}"><span class="category-icon" aria-hidden="true">${icons[c.name]||'↗'}</span>${esc(c.name)}</a>`).join('');
+  target.innerHTML=data.map(c=>`<a class="category-card" href="products.html?category=${encodeURIComponent(c.name)}"><span class="category-icon">${categoryIcon(c.name)}</span><span>${esc(c.name)}</span></a>`).join('');
 }
 async function setupCatalog() {
   const grid=document.querySelector('#catalog-grid');if(!grid)return;
